@@ -53,7 +53,12 @@
         const btnNao = document.getElementById('btn-nao');
         const yoshi = document.getElementById('yoshi');
 
-        function fugir() {
+        function fugir(event) {
+            if (event) event.preventDefault();
+            
+            // 1. Faz o botão sumir instantaneamente
+            btnNao.style.visibility = 'hidden';
+            
             yoshi.style.display = "block";
             yoshi.src = "yoshi_comendo.png";
             
@@ -62,12 +67,17 @@
             const newX = Math.max(20, Math.random() * maxX);
             const newY = Math.max(20, Math.random() * maxY);
 
+            // 2. Define a nova posição
             btnNao.style.left = `${newX}px`;
             btnNao.style.top = `${newY}px`;
             yoshi.style.left = `${newX + 40}px`;
             yoshi.style.top = `${newY - 50}px`;
 
-            setTimeout(() => yoshi.src = "yoshi_normal.png", 400);
+            // 3. Aguarda 500ms (0.5s) para mostrar o botão novamente e resetar o Yoshi
+            setTimeout(() => {
+                btnNao.style.visibility = 'visible';
+                yoshi.src = "yoshi_normal.png";
+            }, 500);
         }
 
         function vitoria() {
