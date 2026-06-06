@@ -53,23 +53,28 @@
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
 
-        function fugir() {
-            // Troca a imagem para o Yoshi comendo
+    function fugir() {
+            // 1. Troca a imagem para o Yoshi comendo
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
+            // 2. Calcula nova posição garantindo que fique dentro da tela
             setTimeout(() => {
-                const x = Math.random() * (window.innerWidth - btnNao.offsetWidth);
-                const y = Math.random() * (window.innerHeight - btnNao.offsetHeight);
-                btnNao.style.left = `${x}px`;
-                btnNao.style.top = `${y}px`;
+                // Dimensões da tela menos o tamanho do botão
+                const maxX = window.innerWidth - btnNao.offsetWidth - 20;
+                const maxY = window.innerHeight - btnNao.offsetHeight - 20;
                 
-                // Volta para o estado normal
+                const randomX = Math.floor(Math.random() * maxX);
+                const randomY = Math.floor(Math.random() * maxY);
+
+                btnNao.style.left = `${randomX}px`;
+                btnNao.style.top = `${randomY}px`;
+                
+                // 3. Volta para o estado normal
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
-            }, 500);
+            }, 300); // 300ms é mais rápido e parece mais fluido
         }
-
         // Lógica da celebração (Botão Sim)
         function celebrar() {
             confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
