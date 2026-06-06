@@ -7,26 +7,25 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
-        
         .container { text-align: center; z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 20px; }
         
-        /* Personagens */
+        /* Yoshi */
         #yoshi { position: absolute; width: 100px; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 999; display: none; pointer-events: none; }
         
-        #mario-wrapper { position: relative; width: 100px; height: 120px; }
+        /* Mario Container - Fixo para não mover o resto da página */
+        #mario-wrapper { position: relative; width: 100px; height: 120px; margin-top: 10px; }
         #cano { width: 90px; position: absolute; bottom: 0; left: 5px; z-index: 2; }
         #mario { width: 60px; position: absolute; bottom: 0px; left: 20px; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; z-index: 1; }
-        #cogumelo { width: 40px; position: absolute; bottom: 40px; left: 30px; opacity: 0; transform: scale(0); transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 3; }
+        #cogumelo { width: 40px; position: absolute; bottom: 30px; left: 30px; opacity: 0; transform: scale(0); transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 3; }
 
         /* Botões */
-        .botoes { position: relative; height: 70px; display: flex; justify-content: center; align-items: center; gap: 20px; }
+        .botoes { position: relative; width: 300px; height: 70px; display: flex; justify-content: center; align-items: center; }
         #btn-sim { padding: 15px 30px; font-size: 20px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; z-index: 4; }
-        #btn-nao { position: absolute; padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+        #btn-nao { position: absolute; padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        /* Animações Acionadas via JS */
-        .animar-mario { opacity: 1 !important; transform: translateY(-90px); }
+        /* Animações */
+        .animar-mario { opacity: 1 !important; transform: translateY(-80px); }
         .animar-cogumelo { opacity: 1 !important; transform: translateY(-60px) scale(1) !important; }
-        .fugindo { transform: scale(0.8); opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -50,28 +49,24 @@
     <script>
         const btnNao = document.getElementById('btn-nao');
         const yoshi = document.getElementById('yoshi');
-        let contagem = 0;
 
         function fugir() {
             yoshi.style.display = "block";
-            contagem++;
             yoshi.src = "yoshi_comendo.png";
             
-            const maxX = window.innerWidth - 100;
-            const maxY = window.innerHeight - 100;
+            // Define limites para o botão não sair da tela
+            const maxX = window.innerWidth - 120;
+            const maxY = window.innerHeight - 120;
             const newX = Math.max(20, Math.random() * maxX);
             const newY = Math.max(20, Math.random() * maxY);
 
             btnNao.style.left = `${newX}px`;
             btnNao.style.top = `${newY}px`;
+            
+            // Yoshi segue o botão
             yoshi.style.left = `${newX + 40}px`;
             yoshi.style.top = `${newY - 50}px`;
 
-            if (contagem >= 5) {
-                btnNao.style.display = 'none';
-                yoshi.style.display = 'none';
-                alert("O Yoshi cansou de brincar! 😏");
-            }
             setTimeout(() => yoshi.src = "yoshi_normal.png", 400);
         }
 
