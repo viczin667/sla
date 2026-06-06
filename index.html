@@ -6,31 +6,37 @@
     <title>Pergunta Importante</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
-        .container { text-align: center; z-index: 10; }
-        
-        #yoshi {
-            position: absolute;
-            width: 150px;
-            transition: all 0.3s ease;
-            z-index: 5;
+        body { 
+            height: 100vh; margin: 0; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            font-family: 'Courier New', Courier, monospace; overflow: hidden;
+            background-image: url('fundo.jpg'); /* Nome do seu arquivo de fundo aqui */
+            background-size: cover; background-position: bottom; background-repeat: no-repeat;
         }
 
-        #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
+        .container { 
+            text-align: center; z-index: 10; 
+            background-color: rgba(255, 255, 255, 0.85); 
+            padding: 30px; border: 4px solid #8b4513; border-radius: 10px;
+        }
+        
+        #yoshi {
+            position: absolute; width: 150px; transition: all 0.3s ease; z-index: 5;
+        }
+
+        button { 
+            padding: 15px 30px; font-size: 20px; font-weight: bold;
+            cursor: pointer; border: 4px solid #000; border-radius: 5px;
+            text-transform: uppercase;
+        }
+
+        #btn-sim { background-color: #2ecc71; color: white; margin: 10px; }
         
         #btn-nao { 
-            position: absolute; 
-            padding: 15px 30px; 
-            font-size: 18px; 
-            background-color: #ff4757; 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
+            position: absolute; background-color: #e74c3c; color: white;
             transition: all 0.3s ease; 
         }
 
-        /* Classe para o Yoshi encolher (animação de comer) */
         .comendo { transform: scale(0.1) !important; opacity: 0; }
     </style>
 </head>
@@ -49,9 +55,7 @@
         const yoshiImg = document.getElementById('yoshi');
         let contagem = 0;
 
-        // Posição inicial
-        yoshiImg.style.left = "50px";
-        yoshiImg.style.top = "50px";
+        yoshiImg.style.left = "50px"; yoshiImg.style.top = "70%";
         yoshiImg.style.transform = "scaleX(-1)";
 
         btnNao.addEventListener('mouseover', fugir);
@@ -59,38 +63,33 @@
 
         function fugir() {
             contagem++;
-
-            // Inicia animação de comer
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
             setTimeout(() => {
+                // Ajustamos as margens para o chão do cenário (o fundo acaba antes do fim da tela)
                 const maxX = window.innerWidth - 200; 
-                const maxY = window.innerHeight - 100;
+                const maxY = window.innerHeight - 250; 
                 
                 const randomX = Math.max(50, Math.floor(Math.random() * maxX));
-                const randomY = Math.max(50, Math.floor(Math.random() * maxY));
+                const randomY = Math.max(200, Math.floor(Math.random() * maxY));
 
-                // Move o botão
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
 
-                // Move o Yoshi para o lado do botão
                 yoshiImg.style.left = `${randomX + 100}px`;
                 yoshiImg.style.top = `${randomY}px`;
                 
-                // Define a direção (inverte se estiver na esquerda ou direita da tela)
                 const direcao = (randomX > window.innerWidth / 2) ? 1 : -1;
                 yoshiImg.style.transform = `scaleX(${direcao})`;
                 
-                // Remove a animação de comer e volta o Yoshi normal
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
 
                 if (contagem >= 5) {
                     btnNao.style.display = 'none';
                     yoshiImg.style.display = 'none';
-                    alert("O Yoshi cansou de brincar e comeu o botão! 😏");
+                    alert("O Yoshi comeu o botão! 😏");
                 }
             }, 800);
         }
@@ -103,18 +102,11 @@
         function exibirMensagem(texto) {
             const msg = document.createElement('div');
             msg.innerText = texto;
-            msg.style.position = 'fixed';
-            msg.style.top = '50%';
-            msg.style.left = '50%';
-            msg.style.transform = 'translate(-50%, -50%)';
-            msg.style.fontSize = '40px';
-            msg.style.fontWeight = 'bold';
-            msg.style.color = '#ff4757';
-            msg.style.backgroundColor = 'white';
-            msg.style.padding = '20px';
-            msg.style.borderRadius = '15px';
-            msg.style.boxShadow = '0 0 20px rgba(0,0,0,0.2)';
-            msg.style.zIndex = '1000';
+            msg.style.position = 'fixed'; msg.style.top = '50%'; msg.style.left = '50%';
+            msg.style.transform = 'translate(-50%, -50%)'; msg.style.fontSize = '40px';
+            msg.style.fontWeight = 'bold'; msg.style.color = '#ff4757';
+            msg.style.backgroundColor = 'white'; msg.style.padding = '20px';
+            msg.style.borderRadius = '15px'; msg.style.border = '5px solid #000';
             document.body.appendChild(msg);
             setTimeout(() => msg.remove(), 3000);
         }
