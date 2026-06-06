@@ -14,6 +14,8 @@
             width: 150px;
             transition: all 0.3s ease;
             z-index: 5;
+            /* Inicia escondido */
+            display: none; 
         }
 
         #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
@@ -49,18 +51,17 @@
         const yoshiImg = document.getElementById('yoshi');
         let contagem = 0;
 
-        // Posição inicial
-        yoshiImg.style.left = "50px";
-        yoshiImg.style.top = "50px";
-        yoshiImg.style.transform = "scaleX(-1)";
-
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
 
         function fugir() {
+            // Torna o Yoshi visível na primeira vez que o botão é "fugido"
+            if (yoshiImg.style.display === "none" || yoshiImg.style.display === "") {
+                yoshiImg.style.display = "block";
+            }
+
             contagem++;
 
-            // Inicia animação de comer
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
@@ -71,19 +72,16 @@
                 const randomX = Math.max(50, Math.floor(Math.random() * maxX));
                 const randomY = Math.max(50, Math.floor(Math.random() * maxY));
 
-                // Move o botão
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
 
-                // Move o Yoshi para o lado do botão
+                // Posiciona o Yoshi ao lado do botão
                 yoshiImg.style.left = `${randomX + 100}px`;
                 yoshiImg.style.top = `${randomY}px`;
                 
-                // Define a direção (inverte se estiver na esquerda ou direita da tela)
                 const direcao = (randomX > window.innerWidth / 2) ? 1 : -1;
                 yoshiImg.style.transform = `scaleX(${direcao})`;
                 
-                // Remove a animação de comer e volta o Yoshi normal
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
 
