@@ -10,11 +10,11 @@
         .container { text-align: center; z-index: 10; }
         
         #yoshi {
-            position: absolute; /* Essencial para mover pelo JS */
+            position: absolute;
             width: 150px;
-            transition: all 0.3s ease; /* Sincronizado com o movimento do botão */
+            transition: all 0.3s ease;
             z-index: 5;
-            transform: scaleX(-1);
+            /* Inversão controlada pelo JS para evitar conflitos */
         }
 
         #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
@@ -49,9 +49,10 @@
         const yoshiImg = document.getElementById('yoshi');
         let contagem = 0;
 
-        // Posição inicial do Yoshi para não ficar no canto
+        // Posição inicial
         yoshiImg.style.left = "50px";
         yoshiImg.style.top = "50px";
+        yoshiImg.style.transform = "scaleX(-1)";
 
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
@@ -63,7 +64,6 @@
             btnNao.classList.add('comendo');
             
             setTimeout(() => {
-                // Margens para o botão e o Yoshi não saírem da tela
                 const maxX = window.innerWidth - 200; 
                 const maxY = window.innerHeight - 100;
                 
@@ -74,15 +74,13 @@
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
 
-                // Move o Yoshi para o lado do botão (Offset de 100px)
+                // Move o Yoshi e inverte a direção conforme o lado da tela
                 yoshiImg.style.left = `${randomX + 100}px`;
                 yoshiImg.style.top = `${randomY}px`;
-                if (randomX > window.innerWidth / 2) {
-                    yoshiImg.style.transform = "scaleX(1)"; // Virado para a esquerda
-                } 
-                    else {
-                    yoshiImg.style.transform = "scaleX(-1)"; // Virado para a direita
-                }
+                
+                // Se o botão está na direita, olha para esquerda (1). Senão, direita (-1).
+                const direcao = (randomX > window.innerWidth / 2) ? 1 : -1;
+                yoshiImg.style.transform = `scaleX(${direcao})`;
                 
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
@@ -90,7 +88,7 @@
                 if (contagem >= 5) {
                     btnNao.style.display = 'none';
                     yoshiImg.style.display = 'none';
-                    alert("O Yoshi comeu o botão! Você não tem mais escolha... 😏");
+                    alert("O Yoshi cansou de brincar e comeu o botão! 😏");
                 }
             }, 300);
         }
