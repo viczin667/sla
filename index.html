@@ -35,6 +35,8 @@
         }
 
         // Lógica da celebração
+     // ... (resto do código anterior)
+
         function celebrar() {
             // Efeito de confetes
             confetti({
@@ -43,10 +45,32 @@
                 origin: { y: 0.6 }
             });
             
-            // Adiciona corações na tela
-            for (let i = 0; i < 10; i++) {
+            // Adiciona corações
+            for (let i = 0; i < 15; i++) {
                 criarCoracao();
             }
+
+            // Exibe a mensagem na tela
+            exibirMensagem("Eu sabia! ❤️");
+        }
+
+        function exibirMensagem(texto) {
+            const msg = document.createElement('div');
+            msg.innerText = texto;
+            msg.style.position = 'fixed';
+            msg.style.top = '50%';
+            msg.style.left = '50%';
+            msg.style.transform = 'translate(-50%, -50%)';
+            msg.style.fontSize = '40px';
+            msg.style.fontWeight = 'bold';
+            msg.style.color = '#ff4757';
+            msg.style.backgroundColor = 'white';
+            msg.style.padding = '20px';
+            msg.style.borderRadius = '15px';
+            msg.style.boxShadow = '0 0 20px rgba(0,0,0,0.2)';
+            msg.style.zIndex = '1000';
+            
+            document.body.appendChild(msg);
         }
 
         function criarCoracao() {
