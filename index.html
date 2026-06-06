@@ -14,7 +14,6 @@
             width: 150px;
             transition: all 0.3s ease;
             z-index: 5;
-            /* Inversão controlada pelo JS para evitar conflitos */
         }
 
         #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
@@ -31,7 +30,8 @@
             transition: all 0.3s ease; 
         }
 
-        .comendo { transform: scale(0.1); opacity: 0; }
+        /* Classe para o Yoshi encolher (animação de comer) */
+        .comendo { transform: scale(0.1) !important; opacity: 0; }
     </style>
 </head>
 <body>
@@ -57,9 +57,10 @@
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
 
-       function fugir() {
+        function fugir() {
             contagem++;
 
+            // Inicia animação de comer
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
@@ -70,26 +71,30 @@
                 const randomX = Math.max(50, Math.floor(Math.random() * maxX));
                 const randomY = Math.max(50, Math.floor(Math.random() * maxY));
 
+                // Move o botão
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
 
-                // Posicionamento do Yoshi (lado direito do botão)
+                // Move o Yoshi para o lado do botão
                 yoshiImg.style.left = `${randomX + 100}px`;
                 yoshiImg.style.top = `${randomY}px`;
                 
+                // Define a direção (inverte se estiver na esquerda ou direita da tela)
                 const direcao = (randomX > window.innerWidth / 2) ? 1 : -1;
                 yoshiImg.style.transform = `scaleX(${direcao})`;
                 
+                // Remove a animação de comer e volta o Yoshi normal
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
 
                 if (contagem >= 5) {
                     btnNao.style.display = 'none';
                     yoshiImg.style.display = 'none';
-                    alert("O Yoshi comeu o botão! 😏");
+                    alert("O Yoshi cansou de brincar e comeu o botão! 😏");
                 }
-            }, 800); // Mantive 800ms para você ver a animação
+            }, 800);
         }
+
         function celebrar() {
             confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
             exibirMensagem("Eu sabia! ❤️");
