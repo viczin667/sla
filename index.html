@@ -12,26 +12,53 @@
         /* Yoshi (Perseguidor) */
         #yoshi { position: absolute; width: 100px; transition: all 0.3s ease; z-index: 5; display: none; }
         
-        /* Elementos da Vitória */
-        #cano { position: absolute; bottom: 0; left: 15%; width: 80px; z-index: 2; }
-        #mario { position: absolute; bottom: 0px; left: 16%; width: 60px; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; z-index: 1; }
-        #cogumelo { position: absolute; bottom: 80px; left: 17%; width: 40px; opacity: 0; transition: opacity 0.5s ease; z-index: 3; }
+        /* Container do Mario (Fixo na parte inferior) */
+        #mario-container {
+            position: fixed;
+            bottom: 0;
+            left: 10%;
+            z-index: 2;
+            width: 100px;
+            height: 100px;
+        }
+
+        #cano { width: 80px; position: absolute; bottom: 0; z-index: 2; }
+        #mario { 
+            width: 50px; 
+            position: absolute; 
+            bottom: 20px; 
+            left: 15px; 
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            opacity: 0; 
+            z-index: 1; 
+        }
+        #cogumelo { 
+            width: 35px; 
+            position: absolute; 
+            bottom: 80px; 
+            left: 22px; 
+            opacity: 0; 
+            transition: opacity 0.5s ease; 
+            z-index: 3; 
+        }
 
         /* Botões */
         #btn-sim { padding: 15px 30px; font-size: 20px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
         #btn-nao { position: absolute; padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
         
         /* Classes de Animação */
-        .animar-mario { opacity: 1 !important; transform: translateY(-80px); }
+        .animar-mario { opacity: 1 !important; transform: translateY(-70px); }
         .animar-cogumelo { opacity: 1 !important; }
         .comendo { transform: scale(0.1) !important; opacity: 0; }
     </style>
 </head>
 <body>
 
-    <img id="cano" src="cano.png" alt="Cano">
-    <img id="mario" src="mario.png" alt="Mario">
-    <img id="cogumelo" src="cogumelo.png" alt="Cogumelo">
+    <div id="mario-container">
+        <img id="cano" src="cano.png" alt="Cano">
+        <img id="mario" src="mario.png" alt="Mario">
+        <img id="cogumelo" src="cogumelo.png" alt="Cogumelo">
+    </div>
 
     <img id="yoshi" src="yoshi_normal.png" alt="Yoshi">
 
@@ -46,27 +73,24 @@
         const yoshiImg = document.getElementById('yoshi');
         let contagem = 0;
 
-        // Lógica do Yoshi fugindo
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
 
         function fugir() {
-            if (yoshiImg.style.display === "none" || yoshiImg.style.display === "") {
-                yoshiImg.style.display = "block";
-            }
+            if (yoshiImg.style.display === "none") yoshiImg.style.display = "block";
             contagem++;
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
             setTimeout(() => {
-                const maxX = window.innerWidth - 200; 
+                const maxX = window.innerWidth - 150; 
                 const maxY = window.innerHeight - 100;
                 const randomX = Math.max(50, Math.floor(Math.random() * maxX));
                 const randomY = Math.max(50, Math.floor(Math.random() * maxY));
 
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
-                yoshiImg.style.left = `${randomX + 100}px`;
+                yoshiImg.style.left = `${randomX + 50}px`;
                 yoshiImg.style.top = `${randomY}px`;
                 
                 btnNao.classList.remove('comendo');
@@ -80,7 +104,6 @@
             }, 500);
         }
 
-        // Lógica da Vitória do Mario
         function vitoria() {
             document.querySelector('.container').style.display = 'none';
             if (btnNao) btnNao.style.display = 'none';
