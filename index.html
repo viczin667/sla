@@ -51,9 +51,10 @@
             exibirMensagem("Eu sabia! ❤️");
         }
 
-        function exibirMensagem(texto) {
+function exibirMensagem(texto) {
             const msg = document.createElement('div');
             msg.innerText = texto;
+            // ... (estilos que definimos antes) ...
             msg.style.position = 'fixed';
             msg.style.top = '50%';
             msg.style.left = '50%';
@@ -68,8 +69,12 @@
             msg.style.zIndex = '1000';
             
             document.body.appendChild(msg);
-        }
 
+            // Adicione isto para remover a mensagem após 3 segundos (3000 ms)
+            setTimeout(() => {
+                msg.remove();
+            }, 3000); 
+        }
         function criarCoracao() {
             const heart = document.createElement('div');
             heart.innerHTML = '❤️';
