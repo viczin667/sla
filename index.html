@@ -6,24 +6,8 @@
     <title>Pergunta Importante</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body { 
-            height: 100vh; margin: 0; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            font-family: sans-serif; overflow: hidden;
-            /* Fundo Mario */
-            background-image: url('fundo.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .container { 
-            text-align: center; z-index: 10; 
-            background-color: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente */
-            padding: 20px;
-            border-radius: 15px;
-            border: 3px solid #8B4513;
-        }
+        body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
+        .container { text-align: center; z-index: 10; }
         
         #yoshi {
             position: absolute;
@@ -46,6 +30,7 @@
             transition: all 0.3s ease; 
         }
 
+        /* Classe para o Yoshi encolher (animação de comer) */
         .comendo { transform: scale(0.1) !important; opacity: 0; }
     </style>
 </head>
@@ -64,8 +49,9 @@
         const yoshiImg = document.getElementById('yoshi');
         let contagem = 0;
 
+        // Posição inicial
         yoshiImg.style.left = "50px";
-        yoshiImg.style.top = "60%"; // Ajustado para ficar na parte de baixo da tela
+        yoshiImg.style.top = "50px";
         yoshiImg.style.transform = "scaleX(-1)";
 
         btnNao.addEventListener('mouseover', fugir);
@@ -73,26 +59,31 @@
 
         function fugir() {
             contagem++;
+
+            // Inicia animação de comer
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
             setTimeout(() => {
-                // Ajustamos as margens para não subir para o céu (mantendo na parte inferior)
                 const maxX = window.innerWidth - 200; 
-                const maxY = window.innerHeight - 250; 
+                const maxY = window.innerHeight - 100;
                 
                 const randomX = Math.max(50, Math.floor(Math.random() * maxX));
-                const randomY = Math.max(300, Math.floor(Math.random() * maxY)); // O 300 garante que fiquem no chão
+                const randomY = Math.max(50, Math.floor(Math.random() * maxY));
 
+                // Move o botão
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
 
+                // Move o Yoshi para o lado do botão
                 yoshiImg.style.left = `${randomX + 100}px`;
                 yoshiImg.style.top = `${randomY}px`;
                 
+                // Define a direção (inverte se estiver na esquerda ou direita da tela)
                 const direcao = (randomX > window.innerWidth / 2) ? 1 : -1;
                 yoshiImg.style.transform = `scaleX(${direcao})`;
                 
+                // Remove a animação de comer e volta o Yoshi normal
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
 
