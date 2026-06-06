@@ -9,40 +9,33 @@
         body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
         .container { text-align: center; z-index: 10; }
         
-        #yoshi {
-            position: absolute;
-            width: 150px;
-            transition: all 0.3s ease;
-            z-index: 5;
-            /* Inicia escondido */
-            display: none; 
-        }
-
-        #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
+        /* Yoshi */
+        #yoshi { position: absolute; width: 100px; transition: all 0.3s ease; z-index: 5; display: none; }
         
-        #btn-nao { 
-            position: absolute; 
-            padding: 15px 30px; 
-            font-size: 18px; 
-            background-color: #ff4757; 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-        }
+        /* Mario Sequence - Inicialmente invisíveis ou posicionados */
+        #cano { position: absolute; bottom: 0; left: 15%; width: 80px; z-index: 2; }
+        #mario { position: absolute; bottom: 80px; left: 15%; width: 60px; transition: all 0.8s ease-out; opacity: 0; z-index: 1; }
+        #cogumelo { position: absolute; bottom: 140px; left: 15%; width: 40px; opacity: 0; transition: all 0.5s ease; z-index: 3; }
 
-        /* Classe para o Yoshi encolher (animação de comer) */
+        #btn-sim { padding: 15px 30px; font-size: 20px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
+        #btn-nao { position: absolute; padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+        
+        .animar-mario { opacity: 1 !important; transform: translateY(-70px); }
+        .animar-cogumelo { opacity: 1 !important; transform: translateY(-50px); }
         .comendo { transform: scale(0.1) !important; opacity: 0; }
     </style>
 </head>
 <body>
 
+    <img id="cano" src="image_e4aac4.png" alt="Cano">
+    <img id="mario" src="image_e4ad8b.png" alt="Mario">
+    <img id="cogumelo" src="image_e4ad6c.png" alt="Cogumelo">
+
     <img id="yoshi" src="yoshi_normal.png" alt="Yoshi">
 
     <div class="container">
         <h1>Você aceita namorar comigo?</h1>
-        <button id="btn-sim" onclick="celebrar()">Sim</button>
+        <button id="btn-sim" onclick="vitoria()">Sim</button>
         <button id="btn-nao">Não</button>
     </div>
 
@@ -55,32 +48,23 @@
         btnNao.addEventListener('touchstart', fugir);
 
         function fugir() {
-            // Torna o Yoshi visível na primeira vez que o botão é "fugido"
             if (yoshiImg.style.display === "none" || yoshiImg.style.display === "") {
                 yoshiImg.style.display = "block";
             }
-
             contagem++;
-
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
             setTimeout(() => {
                 const maxX = window.innerWidth - 200; 
                 const maxY = window.innerHeight - 100;
-                
                 const randomX = Math.max(50, Math.floor(Math.random() * maxX));
                 const randomY = Math.max(50, Math.floor(Math.random() * maxY));
 
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
-
-                // Posiciona o Yoshi ao lado do botão
                 yoshiImg.style.left = `${randomX + 100}px`;
                 yoshiImg.style.top = `${randomY}px`;
-                
-                const direcao = (randomX > window.innerWidth / 2) ? 1 : -1;
-                yoshiImg.style.transform = `scaleX(${direcao})`;
                 
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
@@ -88,33 +72,28 @@
                 if (contagem >= 5) {
                     btnNao.style.display = 'none';
                     yoshiImg.style.display = 'none';
-                    alert("O Yoshi cansou de brincar e comeu o botão! 😏");
+                    alert("O Yoshi cansou de brincar! 😏");
                 }
             }, 800);
         }
 
-        function celebrar() {
-            confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
-            exibirMensagem("Eu sabia! ❤️");
-        }
-
-        function exibirMensagem(texto) {
-            const msg = document.createElement('div');
-            msg.innerText = texto;
-            msg.style.position = 'fixed';
-            msg.style.top = '50%';
-            msg.style.left = '50%';
-            msg.style.transform = 'translate(-50%, -50%)';
-            msg.style.fontSize = '40px';
-            msg.style.fontWeight = 'bold';
-            msg.style.color = '#ff4757';
-            msg.style.backgroundColor = 'white';
-            msg.style.padding = '20px';
-            msg.style.borderRadius = '15px';
-            msg.style.boxShadow = '0 0 20px rgba(0,0,0,0.2)';
-            msg.style.zIndex = '1000';
-            document.body.appendChild(msg);
-            setTimeout(() => msg.remove(), 3000);
+        // --- Nova função de Vitória ---
+        function vitoria() {
+            const mario = document.getElementById('mario');
+            const cogumelo = document.getElementById('cogumelo');
+            
+            // Faz o Mario subir do cano
+            mario.classList.add('animar-mario');
+            
+            setTimeout(() => {
+                // Mario pega o cogumelo
+                cogumelo.classList.add('animar-cogumelo');
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+                
+                setTimeout(() => {
+                    alert("🎮 JOGO ZERADO! Você aceitou o pedido! ❤️");
+                }, 500);
+            }, 800);
         }
     </script>
 </body>
