@@ -5,22 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pergunta Importante</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
-        body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
+        body { 
+            height: 100vh; margin: 0; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; background-color: #f0f0f0; 
+            font-family: sans-serif; overflow: hidden; 
+        }
         .container { text-align: center; z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 20px; }
         
         #yoshi { position: absolute; width: 100px; transition: all 0.2s ease; z-index: 999; display: none; pointer-events: none; }
         
         #mario-wrapper { position: relative; width: 100px; height: 120px; margin-top: 20px; }
         #cano { width: 90px; position: absolute; bottom: 0; left: 5px; z-index: 2; }
-        #mario { width: 60px; position: absolute; bottom: 0px; left: 20px; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; z-index: 1; }
+        #mario { width: 60px; position: absolute; bottom: 0px; left: 20px; transition: all 0.6s ease; opacity: 0; z-index: 1; }
         #cogumelo { width: 40px; position: absolute; bottom: 30px; left: 30px; opacity: 0; transform: scale(0); transition: all 0.5s ease; z-index: 3; }
 
         .botoes { display: flex; justify-content: center; align-items: center; gap: 20px; height: 70px; }
-        #btn-sim { padding: 15px 30px; font-size: 20px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; z-index: 10; }
-        
-        /* Corrigido: z-index alto e position fixo na inicialização */
-        #btn-nao { padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; z-index: 1000; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; }
+        #btn-sim { background-color: #27ae60; color: white; }
+        #btn-nao { background-color: #ff4757; color: white; position: fixed; transition: all 0.2s ease; }
 
         .animar-mario { opacity: 1 !important; transform: translateY(-90px); }
         .animar-cogumelo { opacity: 1 !important; transform: translateY(-60px) scale(1) !important; }
@@ -31,7 +35,7 @@
     <div class="container">
         <h1>Você aceita namorar comigo?</h1>
         <div class="botoes">
-            <button id="btn-sim" onclick="vitoria()">Sim</button>
+            <button id="btn-sim">Sim</button>
             <button id="btn-nao">Não</button>
         </div>
 
@@ -45,16 +49,14 @@
     <img id="yoshi" src="yoshi_normal.png" alt="Yoshi">
 
     <script>
+        const btnSim = document.getElementById('btn-sim');
         const btnNao = document.getElementById('btn-nao');
         const yoshi = document.getElementById('yoshi');
 
         function fugir() {
-            // Garante que o botão fique solto na tela
-            btnNao.style.position = 'fixed';
             yoshi.style.display = "block";
             yoshi.src = "yoshi_comendo.png";
             
-            // Limites da tela garantem que ele não saia das bordas
             const maxX = window.innerWidth - 120;
             const maxY = window.innerHeight - 120;
             const newX = Math.max(20, Math.random() * maxX);
@@ -62,27 +64,29 @@
 
             btnNao.style.left = `${newX}px`;
             btnNao.style.top = `${newY}px`;
-            
             yoshi.style.left = `${newX + 40}px`;
             yoshi.style.top = `${newY - 50}px`;
 
             setTimeout(() => yoshi.src = "yoshi_normal.png", 400);
         }
 
-        btnNao.addEventListener('mouseover', fugir);
-        btnNao.addEventListener('touchstart', fugir);
-
         function vitoria() {
             document.querySelector('.botoes').style.display = 'none';
             document.querySelector('h1').innerText = "Eu sabia! ❤️";
+            
             const mario = document.getElementById('mario');
             const cogumelo = document.getElementById('cogumelo');
+            
             mario.classList.add('animar-mario');
             setTimeout(() => {
                 cogumelo.classList.add('animar-cogumelo');
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
             }, 500);
         }
+
+        btnNao.addEventListener('mouseover', fugir);
+        btnNao.addEventListener('touchstart', fugir);
+        btnSim.addEventListener('click', vitoria);
     </script>
 </body>
 </html>
