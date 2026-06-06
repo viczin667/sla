@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botão Fujão</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+        #btn-fujao {
+            position: absolute;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.1s;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="btn-fujao">Clique!</button>
+
+    <script>
+        const btn = document.getElementById('btn-fujao');
+
+        // Para computador (mouse)
+        btn.addEventListener('mouseover', fugir);
+        
+        // Para celular (toque na tela)
+        btn.addEventListener('touchstart', fugir);
+
+        function fugir() {
+            // Pega a largura e altura da tela
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+
+            btn.style.left = `${x}px`;
+            btn.style.top = `${y}px`;
+        }
+    </script>
+</body>
+</html>
