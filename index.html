@@ -10,7 +10,11 @@
         .container { text-align: center; z-index: 10; }
         
         /* Yoshi (Perseguidor) */
-        #yoshi { position: absolute; width: 100px; transition: all 0.3s ease; z-index: 5; display: none; }
+        #yoshi { position: absolute;
+                width: 100px;
+                transition: all 0.3s ease;
+                z-index: 999;
+                display: none; }
         
         /* Container do Mario (Fixo na parte inferior) */
         #mario-container {
@@ -88,7 +92,7 @@
                 const randomX = Math.max(50, Math.floor(Math.random() * maxX));
                 const randomY = Math.max(50, Math.floor(Math.random() * maxY));
 
-                btnNao.style.left = `${randomX}px`;
+                btnNao.style.left = `${randomX }px`;
                 btnNao.style.top = `${randomY}px`;
                 yoshiImg.style.left = `${randomX + 50}px`;
                 yoshiImg.style.top = `${randomY}px`;
@@ -99,7 +103,7 @@
                 if (contagem >= 5) {
                     btnNao.style.display = 'none';
                     yoshiImg.style.display = 'none';
-                    alert("O Yoshi cansou de brincar! 😏");
+                    alert("O Yoshi comeu o botao!😏");
                 }
             }, 500);
         }
@@ -118,7 +122,7 @@
                 confetti({ particleCount: 200, spread: 100, origin: { y: 0.7 } });
                 
                 setTimeout(() => {
-                    alert("🎮 JOGO ZERADO! Você aceitou o pedido! ❤️");
+                    alert(" Você aceitou o pedido! TE AMO!! ❤️");
                 }, 500);
             }, 600);
         }
