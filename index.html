@@ -10,11 +10,9 @@
         .container { text-align: center; z-index: 10; }
         
         #yoshi {
-            position: absolute; /* Alterado para absolute para permitir movimento via JS */
-            top: 70%;
-            left: 20px;
+            position: absolute; /* Essencial para mover pelo JS */
             width: 150px;
-            transition: all 0.5s ease; /* Transição suave */
+            transition: all 0.3s ease; /* Sincronizado com o movimento do botão */
             z-index: 5;
         }
 
@@ -50,40 +48,42 @@
         const yoshiImg = document.getElementById('yoshi');
         let contagem = 0;
 
+        // Posição inicial do Yoshi para não ficar no canto
+        yoshiImg.style.left = "50px";
+        yoshiImg.style.top = "50px";
+
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
 
         function fugir() {
             contagem++;
 
-            // 1. Yoshi come
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
             setTimeout(() => {
-                // 2. Calcula posições aleatórias
-                const maxX = window.innerWidth - btnNao.offsetWidth - 20;
-                const maxY = window.innerHeight - btnNao.offsetHeight - 20;
+                // Margens para o botão e o Yoshi não saírem da tela
+                const maxX = window.innerWidth - 200; 
+                const maxY = window.innerHeight - 100;
                 
-                const randomX = Math.max(20, Math.floor(Math.random() * maxX));
-                const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+                const randomX = Math.max(50, Math.floor(Math.random() * maxX));
+                const randomY = Math.max(50, Math.floor(Math.random() * maxY));
 
-                // 3. Move o botão
+                // Move o botão
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
 
-                // 4. Move o Yoshi para perto do botão
-                yoshiImg.style.left = `${randomX + 50}px`;
-                yoshiImg.style.top = `${randomY + 50}px`;
+                // Move o Yoshi para o lado do botão (Offset de 100px)
+                yoshiImg.style.left = `${randomX + 100}px`;
+                yoshiImg.style.top = `${randomY}px`;
                 
-                // 5. Estado final
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
 
-                // 6. Verifica se o Yoshi engoliu de vez
                 if (contagem >= 5) {
                     btnNao.style.display = 'none';
-                    alert("O Yoshi comeu o botão! 😏");
+                    yoshiImg.style.display = 'none';
+                    alert("O Yoshi comeu o botão! Você não tem mais escolha... 😏");
                 }
             }, 300);
         }
@@ -108,7 +108,6 @@
             msg.style.borderRadius = '15px';
             msg.style.boxShadow = '0 0 20px rgba(0,0,0,0.2)';
             msg.style.zIndex = '1000';
-            
             document.body.appendChild(msg);
             setTimeout(() => msg.remove(), 3000);
         }
