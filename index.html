@@ -9,7 +9,6 @@
         body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
         .container { text-align: center; z-index: 10; }
         
-        /* Estilo do Yoshi */
         #yoshi {
             position: fixed;
             bottom: 20px;
@@ -48,19 +47,30 @@
     <script>
         const btnNao = document.getElementById('btn-nao');
         const yoshiImg = document.getElementById('yoshi');
+        let contagem = 0; // Contador de tentativas
 
-        // Lógica do botão fujão
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
 
-    function fugir() {
-            // 1. Troca a imagem para o Yoshi comendo
+        function fugir() {
+            contagem++;
+
+            // Se chegar na 5ª vez, o Yoshi come e o botão desaparece para sempre
+            if (contagem >= 5) {
+                yoshiImg.src = "yoshi_comendo.png";
+                btnNao.classList.add('comendo');
+                setTimeout(() => {
+                    btnNao.style.display = 'none'; // Some de vez
+                    alert("O Yoshi comeu o botão! Você não tem mais escolha... 😏");
+                }, 300);
+                return; // Interrompe a função aqui
+            }
+
+            // Lógica normal de fugir
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
-            // 2. Calcula nova posição garantindo que fique dentro da tela
             setTimeout(() => {
-                // Dimensões da tela menos o tamanho do botão
                 const maxX = window.innerWidth - btnNao.offsetWidth - 20;
                 const maxY = window.innerHeight - btnNao.offsetHeight - 20;
                 
@@ -70,12 +80,11 @@
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
                 
-                // 3. Volta para o estado normal
                 btnNao.classList.remove('comendo');
-                yoshiImg.src = "yoshi_normal.png";
-            }, 300); // 300ms é mais rápido e parece mais fluido
+                yoshiImg.src = "yoshi-normal.png";
+            }, 300);
         }
-        // Lógica da celebração (Botão Sim)
+
         function celebrar() {
             confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
             exibirMensagem("Eu sabia! ❤️");
@@ -96,12 +105,8 @@
             msg.style.borderRadius = '15px';
             msg.style.boxShadow = '0 0 20px rgba(0,0,0,0.2)';
             msg.style.zIndex = '1000';
-            
             document.body.appendChild(msg);
-
-            setTimeout(() => {
-                msg.remove();
-            }, 3000);
+            setTimeout(() => { msg.remove(); }, 3000);
         }
     </script>
 </body>
