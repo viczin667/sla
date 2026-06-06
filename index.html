@@ -9,22 +9,20 @@
         body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
         .container { text-align: center; z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 20px; }
         
-        /* Yoshi */
-        #yoshi { position: absolute; width: 100px; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 999; display: none; pointer-events: none; }
+        #yoshi { position: absolute; width: 100px; transition: all 0.2s ease; z-index: 999; display: none; pointer-events: none; }
         
-        /* Mario Container - Fixo para não mover o resto da página */
-        #mario-wrapper { position: relative; width: 100px; height: 120px; margin-top: 10px; }
+        #mario-wrapper { position: relative; width: 100px; height: 120px; margin-top: 20px; }
         #cano { width: 90px; position: absolute; bottom: 0; left: 5px; z-index: 2; }
         #mario { width: 60px; position: absolute; bottom: 0px; left: 20px; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; z-index: 1; }
-        #cogumelo { width: 40px; position: absolute; bottom: 30px; left: 30px; opacity: 0; transform: scale(0); transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 3; }
+        #cogumelo { width: 40px; position: absolute; bottom: 30px; left: 30px; opacity: 0; transform: scale(0); transition: all 0.5s ease; z-index: 3; }
 
-        /* Botões */
-        .botoes { position: relative; width: 300px; height: 70px; display: flex; justify-content: center; align-items: center; }
-        #btn-sim { padding: 15px 30px; font-size: 20px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; z-index: 4; }
-        #btn-nao { position: absolute; padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .botoes { display: flex; justify-content: center; align-items: center; gap: 20px; height: 70px; }
+        #btn-sim { padding: 15px 30px; font-size: 20px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; z-index: 10; }
+        
+        /* Corrigido: z-index alto e position fixo na inicialização */
+        #btn-nao { padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; z-index: 1000; }
 
-        /* Animações */
-        .animar-mario { opacity: 1 !important; transform: translateY(-80px); }
+        .animar-mario { opacity: 1 !important; transform: translateY(-90px); }
         .animar-cogumelo { opacity: 1 !important; transform: translateY(-60px) scale(1) !important; }
     </style>
 </head>
@@ -51,10 +49,12 @@
         const yoshi = document.getElementById('yoshi');
 
         function fugir() {
+            // Garante que o botão fique solto na tela
+            btnNao.style.position = 'fixed';
             yoshi.style.display = "block";
             yoshi.src = "yoshi_comendo.png";
             
-            // Define limites para o botão não sair da tela
+            // Limites da tela garantem que ele não saia das bordas
             const maxX = window.innerWidth - 120;
             const maxY = window.innerHeight - 120;
             const newX = Math.max(20, Math.random() * maxX);
@@ -63,7 +63,6 @@
             btnNao.style.left = `${newX}px`;
             btnNao.style.top = `${newY}px`;
             
-            // Yoshi segue o botão
             yoshi.style.left = `${newX + 40}px`;
             yoshi.style.top = `${newY - 50}px`;
 
@@ -76,12 +75,9 @@
         function vitoria() {
             document.querySelector('.botoes').style.display = 'none';
             document.querySelector('h1').innerText = "Eu sabia! ❤️";
-
             const mario = document.getElementById('mario');
             const cogumelo = document.getElementById('cogumelo');
-            
             mario.classList.add('animar-mario');
-            
             setTimeout(() => {
                 cogumelo.classList.add('animar-cogumelo');
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
