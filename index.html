@@ -14,6 +14,7 @@
             width: 150px;
             transition: all 0.3s ease; /* Sincronizado com o movimento do botão */
             z-index: 5;
+            transform: scaleX(-1);
         }
 
         #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
@@ -76,6 +77,12 @@
                 // Move o Yoshi para o lado do botão (Offset de 100px)
                 yoshiImg.style.left = `${randomX + 100}px`;
                 yoshiImg.style.top = `${randomY}px`;
+                if (randomX > window.innerWidth / 2) {
+                    yoshiImg.style.transform = "scaleX(1)"; // Virado para a esquerda
+                } 
+                    else {
+                    yoshiImg.style.transform = "scaleX(-1)"; // Virado para a direita
+                }
                 
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
