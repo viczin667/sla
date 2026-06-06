@@ -7,70 +7,61 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
-        .container { text-align: center; z-index: 10; }
+        .container { text-align: center; z-index: 10; position: relative; }
         
-        /* Yoshi (Perseguidor) */
-        #yoshi { position: absolute;
-                width: 100px;
-                transition: all 0.3s ease;
-                z-index: 999;
-                display: none; }
+        #yoshi { position: absolute; width: 120px; transition: all 0.2s ease; z-index: 999; display: none; pointer-events: none; }
         
-        /* Container do Mario (Fixo na parte inferior) */
+        /* Container do Mario dentro da .container para ficar abaixo dos botões */
         #mario-container {
-            position: fixed;
-            bottom: 0;
-            left: 10%;
-            z-index: 2;
-            width: 100px;
-            height: 100px;
+            position: relative;
+            width: 120px;
+            height: 140px;
+            margin: 20px auto 0 auto;
         }
 
-        #cano { width: 80px; position: absolute; bottom: 0; z-index: 2; }
+        #cano { width: 100px; position: absolute; bottom: 0; left: 10px; z-index: 2; }
         #mario { 
-            width: 50px; 
+            width: 60px; 
             position: absolute; 
-            bottom: 20px; 
-            left: 15px; 
+            bottom: 10px; 
+            left: 30px; 
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             opacity: 0; 
             z-index: 1; 
         }
         #cogumelo { 
-            width: 35px; 
+            width: 45px; 
             position: absolute; 
-            bottom: 80px; 
-            left: 22px; 
+            bottom: 100px; 
+            left: 35px; 
             opacity: 0; 
-            transition: opacity 0.5s ease; 
+            transition: all 0.4s ease; 
             z-index: 3; 
         }
 
-        /* Botões */
         #btn-sim { padding: 15px 30px; font-size: 20px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
         #btn-nao { position: absolute; padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
         
-        /* Classes de Animação */
-        .animar-mario { opacity: 1 !important; transform: translateY(-70px); }
-        .animar-cogumelo { opacity: 1 !important; }
+        .animar-mario { opacity: 1 !important; transform: translateY(-110px); }
+        .animar-cogumelo { opacity: 1 !important; transform: translateY(-20px); }
         .comendo { transform: scale(0.1) !important; opacity: 0; }
     </style>
 </head>
 <body>
 
-    <div id="mario-container">
-        <img id="cano" src="cano.png" alt="Cano">
-        <img id="mario" src="mario.png" alt="Mario">
-        <img id="cogumelo" src="cogumelo.png" alt="Cogumelo">
-    </div>
-
-    <img id="yoshi" src="yoshi_normal.png" alt="Yoshi">
-
     <div class="container">
         <h1>Você aceita namorar comigo?</h1>
         <button id="btn-sim" onclick="vitoria()">Sim</button>
         <button id="btn-nao">Não</button>
+
+        <div id="mario-container">
+            <img id="cano" src="cano.png" alt="Cano">
+            <img id="mario" src="mario.png" alt="Mario">
+            <img id="cogumelo" src="cogumelo.png" alt="Cogumelo">
+        </div>
     </div>
+
+    <img id="yoshi" src="yoshi_normal.png" alt="Yoshi">
 
     <script>
         const btnNao = document.getElementById('btn-nao');
@@ -81,21 +72,19 @@
         btnNao.addEventListener('touchstart', fugir);
 
         function fugir() {
-            if (yoshiImg.style.display === "none") yoshiImg.style.display = "block";
+            yoshiImg.style.display = "block";
             contagem++;
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
             setTimeout(() => {
-                const maxX = window.innerWidth - 150; 
+                const maxX = window.innerWidth - 100;
                 const maxY = window.innerHeight - 100;
-                const randomX = Math.max(50, Math.floor(Math.random() * maxX));
-                const randomY = Math.max(50, Math.floor(Math.random() * maxY));
-
-                btnNao.style.left = `${randomX }px`;
-                btnNao.style.top = `${randomY}px`;
-                yoshiImg.style.left = `${randomX + 50}px`;
-                yoshiImg.style.top = `${randomY}px`;
+                btnNao.style.left = `${Math.max(20, Math.random() * maxX)}px`;
+                btnNao.style.top = `${Math.max(20, Math.random() * maxY)}px`;
+                
+                yoshiImg.style.left = `${parseInt(btnNao.style.left) + 40}px`;
+                yoshiImg.style.top = `${parseInt(btnNao.style.top) - 50}px`;
                 
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
@@ -103,14 +92,15 @@
                 if (contagem >= 5) {
                     btnNao.style.display = 'none';
                     yoshiImg.style.display = 'none';
-                    alert("O Yoshi comeu o botao!😏");
+                    alert("O Yoshi comeu o botão! 😏");
                 }
-            }, 500);
+            }, 300);
         }
 
         function vitoria() {
-            document.querySelector('.container').style.display = 'none';
-            if (btnNao) btnNao.style.display = 'none';
+            // Esconde apenas os botões, mantém a cena do Mario visível
+            document.getElementById('btn-sim').style.display = 'none';
+            document.getElementById('btn-nao').style.display = 'none';
 
             const mario = document.getElementById('mario');
             const cogumelo = document.getElementById('cogumelo');
@@ -122,7 +112,7 @@
                 confetti({ particleCount: 200, spread: 100, origin: { y: 0.7 } });
                 
                 setTimeout(() => {
-                    alert(" Você aceitou o pedido! TE AMO!! ❤️");
+                    alert("Você aceitou o pedido! TE AMO!! ❤️");
                 }, 500);
             }, 600);
         }
