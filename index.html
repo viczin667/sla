@@ -10,11 +10,11 @@
         .container { text-align: center; z-index: 10; }
         
         #yoshi {
-            position: fixed;
+            position: absolute; /* Mudado para absolute para permitir movimento */
             bottom: 20px;
             left: 20px;
             width: 150px;
-            transition: transform 0.3s;
+            transition: all 0.3s ease; /* Transição suave para o Yoshi também */
         }
 
         #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
@@ -47,7 +47,7 @@
     <script>
         const btnNao = document.getElementById('btn-nao');
         const yoshiImg = document.getElementById('yoshi');
-        let contagem = 0; // Contador de tentativas
+        let contagem = 0;
 
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
@@ -55,56 +55,35 @@
         function fugir() {
             contagem++;
 
-            // 1. Yoshi muda para a pose de "comendo"
+            // 1. Yoshi come e botão encolhe
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
             setTimeout(() => {
-                // 2. Calcula uma posição aleatória
+                // 2. Calcula posições aleatórias
                 const maxX = window.innerWidth - btnNao.offsetWidth - 20;
                 const maxY = window.innerHeight - btnNao.offsetHeight - 20;
-                const randomX = Math.floor(Math.random() * maxX);
-                const randomY = Math.floor(Math.random() * maxY);
+                
+                const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+                const randomY = Math.max(20, Math.floor(Math.random() * maxY));
 
                 // 3. Move o botão
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
 
-                // 4. MUDANÇA: Move o Yoshi para perto do botão
-                // Colocamos o Yoshi um pouco abaixo e à direita do botão
+                // 4. Move o Yoshi para perto do botão
                 yoshiImg.style.left = `${randomX + 50}px`;
                 yoshiImg.style.top = `${randomY + 50}px`;
                 
-                // Remove o fixed do Yoshi para ele poder se mover
-                yoshiImg.style.position = 'absolute'; 
-
-                // 5. Volta o Yoshi ao normal
-                btnNao.classList.remove('comendo');
-                yoshiImg.src = "yoshi-normal.png";
-
-                // Se chegou em 5, o Yoshi come de vez
-                if (contagem >= 5) {
-                    btnNao.style.display = 'none';
-                    alert("O Yoshi comeu o botão! 😏");
-                }
-            }, 300);
-        }
-            // Lógica normal de fugir
-            yoshiImg.src = "yoshi_comendo.png";
-            btnNao.classList.add('comendo');
-            
-            setTimeout(() => {
-                const maxX = window.innerWidth - btnNao.offsetWidth - 20;
-                const maxY = window.innerHeight - btnNao.offsetHeight - 20;
-                
-                const randomX = Math.floor(Math.random() * maxX);
-                const randomY = Math.floor(Math.random() * maxY);
-
-                btnNao.style.left = `${randomX}px`;
-                btnNao.style.top = `${randomY}px`;
-                
+                // 5. Estado final
                 btnNao.classList.remove('comendo');
                 yoshiImg.src = "yoshi_normal.png";
+
+                // 6. Verifica se o Yoshi engoliu de vez
+                if (contagem >= 5) {
+                    btnNao.style.display = 'none';
+                    alert("O Yoshi cansou de brincar e comeu o botão! 😏");
+                }
             }, 300);
         }
 
@@ -128,8 +107,9 @@
             msg.style.borderRadius = '15px';
             msg.style.boxShadow = '0 0 20px rgba(0,0,0,0.2)';
             msg.style.zIndex = '1000';
+            
             document.body.appendChild(msg);
-            setTimeout(() => { msg.remove(); }, 3000);
+            setTimeout(() => msg.remove(), 3000);
         }
     </script>
 </body>
