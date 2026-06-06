@@ -55,17 +55,40 @@
         function fugir() {
             contagem++;
 
-            // Se chegar na 5ª vez, o Yoshi come e o botão desaparece para sempre
-            if (contagem >= 5) {
-                yoshiImg.src = "yoshi_comendo.png";
-                btnNao.classList.add('comendo');
-                setTimeout(() => {
-                    btnNao.style.display = 'none'; // Some de vez
-                    alert("O Yoshi comeu o botão! Você não tem mais escolha... 😏");
-                }, 300);
-                return; // Interrompe a função aqui
-            }
+            // 1. Yoshi muda para a pose de "comendo"
+            yoshiImg.src = "yoshi_comendo.png";
+            btnNao.classList.add('comendo');
+            
+            setTimeout(() => {
+                // 2. Calcula uma posição aleatória
+                const maxX = window.innerWidth - btnNao.offsetWidth - 20;
+                const maxY = window.innerHeight - btnNao.offsetHeight - 20;
+                const randomX = Math.floor(Math.random() * maxX);
+                const randomY = Math.floor(Math.random() * maxY);
 
+                // 3. Move o botão
+                btnNao.style.left = `${randomX}px`;
+                btnNao.style.top = `${randomY}px`;
+
+                // 4. MUDANÇA: Move o Yoshi para perto do botão
+                // Colocamos o Yoshi um pouco abaixo e à direita do botão
+                yoshiImg.style.left = `${randomX + 50}px`;
+                yoshiImg.style.top = `${randomY + 50}px`;
+                
+                // Remove o fixed do Yoshi para ele poder se mover
+                yoshiImg.style.position = 'absolute'; 
+
+                // 5. Volta o Yoshi ao normal
+                btnNao.classList.remove('comendo');
+                yoshiImg.src = "yoshi-normal.png";
+
+                // Se chegou em 5, o Yoshi come de vez
+                if (contagem >= 5) {
+                    btnNao.style.display = 'none';
+                    alert("O Yoshi comeu o botão! 😏");
+                }
+            }, 300);
+        }
             // Lógica normal de fugir
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
@@ -81,7 +104,7 @@
                 btnNao.style.top = `${randomY}px`;
                 
                 btnNao.classList.remove('comendo');
-                yoshiImg.src = "yoshi-normal.png";
+                yoshiImg.src = "yoshi_normal.png";
             }, 300);
         }
 
