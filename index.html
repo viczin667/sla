@@ -57,7 +57,7 @@
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
 
-        function fugir() {
+       function fugir() {
             contagem++;
 
             yoshiImg.src = "yoshi_comendo.png";
@@ -70,15 +70,13 @@
                 const randomX = Math.max(50, Math.floor(Math.random() * maxX));
                 const randomY = Math.max(50, Math.floor(Math.random() * maxY));
 
-                // Move o botão
                 btnNao.style.left = `${randomX}px`;
                 btnNao.style.top = `${randomY}px`;
 
-                // Move o Yoshi e inverte a direção conforme o lado da tela
+                // Posicionamento do Yoshi (lado direito do botão)
                 yoshiImg.style.left = `${randomX + 100}px`;
                 yoshiImg.style.top = `${randomY}px`;
                 
-                // Se o botão está na direita, olha para esquerda (1). Senão, direita (-1).
                 const direcao = (randomX > window.innerWidth / 2) ? 1 : -1;
                 yoshiImg.style.transform = `scaleX(${direcao})`;
                 
@@ -88,11 +86,10 @@
                 if (contagem >= 5) {
                     btnNao.style.display = 'none';
                     yoshiImg.style.display = 'none';
-                    alert("O Yoshi cansou de brincar e comeu o botão! 😏");
+                    alert("O Yoshi comeu o botão! 😏");
                 }
-            }, 300);
+            }, 800); // Mantive 800ms para você ver a animação
         }
-
         function celebrar() {
             confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
             exibirMensagem("Eu sabia! ❤️");
