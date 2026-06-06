@@ -10,11 +10,12 @@
         .container { text-align: center; z-index: 10; }
         
         #yoshi {
-            position: absolute; /* Mudado para absolute para permitir movimento */
-            bottom: 20px;
+            position: absolute; /* Alterado para absolute para permitir movimento via JS */
+            top: 70%;
             left: 20px;
             width: 150px;
-            transition: all 0.3s ease; /* Transição suave para o Yoshi também */
+            transition: all 0.5s ease; /* Transição suave */
+            z-index: 5;
         }
 
         #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
@@ -55,7 +56,7 @@
         function fugir() {
             contagem++;
 
-            // 1. Yoshi come e botão encolhe
+            // 1. Yoshi come
             yoshiImg.src = "yoshi_comendo.png";
             btnNao.classList.add('comendo');
             
@@ -82,7 +83,7 @@
                 // 6. Verifica se o Yoshi engoliu de vez
                 if (contagem >= 5) {
                     btnNao.style.display = 'none';
-                    alert("O Yoshi cansou de brincar e comeu o botão! 😏");
+                    alert("O Yoshi comeu o botão! 😏");
                 }
             }, 300);
         }
