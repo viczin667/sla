@@ -6,10 +6,39 @@
     <title>Pergunta Importante</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
-        .container { text-align: center; }
-        #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
-        #btn-nao { position: absolute; padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.1s; }
+        body { 
+            height: 100vh; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            background-color: #f0f0f0; 
+            font-family: sans-serif; 
+            overflow: hidden; 
+        }
+        .container { text-align: center; z-index: 10; }
+        #btn-sim { 
+            padding: 15px 30px; 
+            font-size: 18px; 
+            background-color: #27ae60; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            margin: 10px; 
+        }
+        #btn-nao { 
+            position: absolute; 
+            padding: 15px 30px; 
+            font-size: 18px; 
+            background-color: #ff4757; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.1s; 
+        }
     </style>
 </head>
 <body>
@@ -34,6 +63,7 @@
             btnNao.style.top = `${y}px`;
         }
 
+        // Lógica da celebração
         function celebrar() {
             // Efeito de confetes
             confetti({
@@ -47,14 +77,13 @@
                 criarCoracao();
             }
 
-            // Exibe a mensagem na tela
+            // Exibe a mensagem
             exibirMensagem("Eu sabia! ❤️");
         }
 
-function exibirMensagem(texto) {
+        function exibirMensagem(texto) {
             const msg = document.createElement('div');
             msg.innerText = texto;
-            // ... (estilos que definimos antes) ...
             msg.style.position = 'fixed';
             msg.style.top = '50%';
             msg.style.left = '50%';
@@ -70,11 +99,12 @@ function exibirMensagem(texto) {
             
             document.body.appendChild(msg);
 
-            // Adicione isto para remover a mensagem após 3 segundos (3000 ms)
+            // Remove a mensagem após 3 segundos
             setTimeout(() => {
                 msg.remove();
             }, 3000); 
         }
+
         function criarCoracao() {
             const heart = document.createElement('div');
             heart.innerHTML = '❤️';
