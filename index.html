@@ -3,51 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Botão</title>
+    <title>Pergunta Importante</title>
     <style>
         body {
             height: 100vh;
             margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-color: #f0f0f0;
-            overflow: hidden;
             font-family: sans-serif;
         }
-        #btn-fujao {
-            position: absolute;
+        .container {
+            text-align: center;
+        }
+        #btn-sim {
             padding: 15px 30px;
             font-size: 18px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            margin: 10px;
+        }
+        #btn-nao {
+            position: absolute; /* Essencial para ele se mover pela tela */
+            padding: 15px 30px;
+            font-size: 18px;
             background-color: #ff4757;
             color: white;
             border: none;
             border-radius: 8px;
+            cursor: pointer;
             transition: all 0.1s;
         }
     </style>
 </head>
 <body>
 
-    <button id="btn-fujao">Clique!</button>
+    <div class="container">
+        <h1>Você aceita namorar comigo?</h1>
+        <button id="btn-sim" onclick="alert('Sabia que você diria sim! ❤️')">Sim</button>
+        <button id="btn-nao">Não</button>
+    </div>
 
     <script>
-        const btn = document.getElementById('btn-fujao');
+        const btnNao = document.getElementById('btn-nao');
 
-        // Para computador (mouse)
-        btn.addEventListener('mouseover', fugir);
-        
-        // Para celular (toque na tela)
-        btn.addEventListener('touchstart', fugir);
+        // Eventos para desktop e mobile
+        btnNao.addEventListener('mouseover', fugir);
+        btnNao.addEventListener('touchstart', fugir);
 
         function fugir() {
-            // Pega a largura e altura da tela
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            // Calcula posição aleatória garantindo que o botão não saia da tela
+            const x = Math.random() * (window.innerWidth - btnNao.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btnNao.offsetHeight);
 
-            btn.style.left = `${x}px`;
-            btn.style.top = `${y}px`;
+            btnNao.style.left = `${x}px`;
+            btnNao.style.top = `${y}px`;
         }
     </script>
 </body>
