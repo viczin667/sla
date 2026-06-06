@@ -4,65 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pergunta Importante</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body {
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-            font-family: sans-serif;
-        }
-        .container {
-            text-align: center;
-        }
-        #btn-sim {
-            padding: 15px 30px;
-            font-size: 18px;
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 10px;
-        }
-        #btn-nao {
-            position: absolute; /* Essencial para ele se mover pela tela */
-            padding: 15px 30px;
-            font-size: 18px;
-            background-color: #ff4757;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.1s;
-        }
+        body { height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: sans-serif; overflow: hidden; }
+        .container { text-align: center; }
+        #btn-sim { padding: 15px 30px; font-size: 18px; background-color: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
+        #btn-nao { position: absolute; padding: 15px 30px; font-size: 18px; background-color: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.1s; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h1>Você aceita namorar comigo?</h1>
-        <button id="btn-sim" onclick="alert('Sabia que você diria sim! ❤️')">Sim</button>
+        <button id="btn-sim" onclick="celebrar()">Sim</button>
         <button id="btn-nao">Não</button>
     </div>
 
     <script>
         const btnNao = document.getElementById('btn-nao');
 
-        // Eventos para desktop e mobile
+        // Lógica do botão fujão
         btnNao.addEventListener('mouseover', fugir);
         btnNao.addEventListener('touchstart', fugir);
 
         function fugir() {
-            // Calcula posição aleatória garantindo que o botão não saia da tela
             const x = Math.random() * (window.innerWidth - btnNao.offsetWidth);
             const y = Math.random() * (window.innerHeight - btnNao.offsetHeight);
-
             btnNao.style.left = `${x}px`;
             btnNao.style.top = `${y}px`;
+        }
+
+        // Lógica da celebração
+        function celebrar() {
+            // Efeito de confetes
+            confetti({
+                particleCount: 200,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+            
+            // Adiciona corações na tela
+            for (let i = 0; i < 10; i++) {
+                criarCoracao();
+            }
+        }
+
+        function criarCoracao() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'absolute';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = Math.random() * 30 + 20 + 'px';
+            heart.style.transition = 'top 3s linear';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.top = '-10vh';
+            }, 100);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
         }
     </script>
 </body>
